@@ -1,0 +1,218 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta http-equiv="Expires" content="-1">
+	<meta http-equiv="Cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="PRAGMA" content="NO-CACHE">
+
+    <title>Wormix</title>
+
+	<script type="text/javascript" src="bowser.js"></script>
+	<script type="text/javascript" src="swfobject.js"></script>
+    <script type="text/javascript" src="//vk.com/js/api/xd_connection.js?2"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    
+    <style type="text/css" media="screen">
+        #flashContent {
+            width: 100%;
+            height: 100%;
+            min-width: 900;
+            min-height: 600;
+            left: 0px;
+            top: 0px;       
+            text-align:"center";
+        }
+
+        .flash_hidden embed, .flash_hidden object {
+           left: -5000px;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background: #FFFFFF;
+            text-align: "center";
+        }
+
+        .flash-update-bg {
+            margin: 0;
+            background: url(FlashPopRus.jpg?) center center no-repeat;
+            height: 600px;
+            background-size: contain;
+        }
+        #flas_run{
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            position: relative;
+            top: 454px;
+        }
+    </style>
+
+	<script type="text/javascript">
+        <!-- "For version detection, set to min. required Flash Player version, or 0 (or 0.0.0), for no version detection." -->
+        var swfVersionStr = "11.3.0";
+        <!-- To use express install, set to playerProductInstall.swf, otherwise the empty string. -->
+        var xiSwfUrlStr = "playerProductInstall.swf";       
+		
+        var params = {};
+        var query = location.search.substring(1);
+        var vars = query.split("&");
+
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            params[pair[0]] = pair[1];
+        }
+
+        params.quality = "high";
+        params.bgcolor = "#FFFFFF";
+        params.allowscriptaccess = "sameDomain";
+        params.allowfullscreen = "true";		
+        params.scale = "noscale"; 
+
+		var attributes = {};		
+        attributes.id = "Wormix";
+        attributes.name = "Wormix";
+        attributes.align = "middle";
+		attributes.allowfullscreen = "true";
+        attributes.allowFullScreenInteractive = "true";
+        attributes.wmode = "direct";
+
+        swfobject.createCSS("#load", "display:block;visibility:visible;");
+        swfobject.embedSWF(
+                "preloader_193.swf", "flashContent",
+                "100%", "100%",
+                swfVersionStr, xiSwfUrlStr, params, attributes);
+        swfobject.createCSS("#flashContent", "display:block;text-align:middle;");
+        swfobject.createCSS("#load", "display:none;visibility:hidden;");
+
+        function callApi(method_name, param){
+            consoleOutput(".callApi: " + method_name + " " + param);
+            VK.api(method_name, param, vkApiCallback);
+        }
+
+        function vkApiCallback(data) {
+            consoleOutput(".vkApiCallback: " + data);
+            getSwf().onApiCallback(data);
+        }
+
+        function doCompare(i1, i2) {
+            consoleOutput(".doCompare: " + i1 + " " + i2);
+            getSwf().compareCallback(i1!=i2);
+        }
+
+        function registerCallbacks(){
+            consoleOutput(".registerCallbacks...");
+
+            VK.addCallback("onOrderSuccess", onOrderSuccess);
+            VK.addCallback("onOrderCancel", onOrderCancel);
+            VK.addCallback("onOrderFail", onOrderFail);
+
+            VK.addCallback("onSubscriptionSuccess", onSubscriptionSuccess);
+            VK.addCallback("onSubscriptionCancel", onSubscriptionCancel);
+            VK.addCallback("onSubscriptionFail", onSubscriptionFail);
+
+            VK.addCallback("onWindowBlur", onWindowBlur);
+            VK.addCallback("onWindowFocus", onWindowFocus);
+        }
+
+        function onOrderSuccess(order_id){
+            consoleOutput(".onOrderSuccess: " + order_id);
+            getSwf().onOrderSuccess(order_id);
+        }
+        function onOrderCancel(){
+            consoleOutput(".onOrderCancel");
+            getSwf().onOrderCancel();
+        }
+        function onOrderFail(errorCode){
+            consoleOutput(".onOrderFail: " + errorCode);
+            getSwf().onOrderFail(errorCode);
+        }
+
+        function onSubscriptionSuccess(subscription_id){
+            consoleOutput(".onSubscriptionSuccess " + subscription_id);
+            getSwf().onSubscriptionSuccess(subscription_id);
+        }
+        function onSubscriptionCancel(){
+            consoleOutput(".onSubscriptionCancel");
+            getSwf().onSubscriptionCancel();
+        }
+        function onSubscriptionFail(errorCode){
+            consoleOutput(".onSubscriptionFail " + errorCode);
+            getSwf().onSubscriptionFail(errorCode);
+        }
+
+        function onWindowBlur() {
+//            $("#flashContent").css({height: "0px", overflow: "hidden", visible:"false"});
+//            VK.callMethod("resizeWindow", 1, 1);
+        }
+
+        function onWindowFocus() {
+//            $("#flashContent").css({height: "600px", overflow: "visible", visible:"true"});
+//            VK.callMethod("resizeWindow", 900, 600);
+        }
+
+        function getSwf() {
+            if (navigator.appName.indexOf("Microsoft") != -1) {
+                return window["flashContent"];
+            } else {
+                return document["flashContent"];
+            }
+        }
+
+        function reloadPage() {
+            location.reload();
+        }
+
+        function checkTop() {
+            document.getElementById('flash-notify').style.display = 'none';
+            document.getElementById('flashContent').style.display = 'block';
+            getSwf().onCheckTop(window == top || window.name.indexOf("app") != -1);
+        }
+
+        function consoleOutput(data, type) {
+            switch (type) {
+                case "dir": console.dir(".consoleOutput: " + data); return;
+                case "error": console.error(".consoleOutput: " + data); return;
+                case "info": console.info(".consoleOutput: " + data); return;
+                case "warn": console.warn(".consoleOutput: " + data); return;
+            }
+            console.log(".consoleOutput: " + data);
+        }
+    </script><style type="text/css" media="screen">#load {display:block;visibility:visible;}</style><style type="text/css" media="screen">#flashContent {visibility:hidden}</style><style type="text/css" media="screen">#flashContent {display:block;text-align:middle;}</style><style type="text/css" media="screen">#load {display:none;visibility:hidden;}</style>
+</head>
+
+<body>
+<object type="application/x-shockwave-flash" data="preloader_193.swf" width="100%" height="100%" id="flashContent" style="visibility: visible; display: block;"><param name="id" value="Wormix"><param name="name" value="Wormix"><param name="align" value="middle"><param name="allowfullscreen" value="true"><param name="allowFullScreenInteractive" value="true"><param name="wmode" value="direct"><param name="flashvars" value="api_url=https://api.vk.com/api.php&amp;api_id=1744756&amp;api_settings=11543&amp;viewer_id=780429962&amp;viewer_type=2&amp;sid=vk1.a.PusE4Jq7WhSmaXNgLa1_eh7XzNcWsiiUFOpnBNlHqebb3K0e5uSDBhutkXvnPzQ1-lxO6PFYMZYhdN9RPUNzE5dq20cnkgLdbzy0Vxx3GFYr9FUuxdsau8cWL-88PvF6nYo8vD2_dqyMg7r7eQ4lQ4bpNYSsBLDTYiMlUCLNzum4VM9xkyrfIaxBzq9MqGV6&amp;secret=7965e1ffd3&amp;access_token=vk1.a.mKGg7jSBrfH7H_QPAfbZpE0fdO9YKuRvrhSK5rjL3id2F7sKTO_xpfFBHqjFNf350eUpOvkWUOwlhWH9C5jjYbGMx93WPgkrtjYto2FDC161fjiZmcd1guP5gtEDckjtXFQ7gAMhibveAV3CYpyZtmBNxqKXK6k7QWkp_qngB1NYN6cH0PABcLXghwj5s0rYrL3_cf5x4xOcZdp01XPM_g&amp;user_id=780429962&amp;is_app_user=1&amp;language=1&amp;parent_language=0&amp;is_secure=1&amp;stats_hash=35ee16926834a919ae&amp;is_favorite=1&amp;group_id=0&amp;ads_app_id=1744756_f2a1d24bcd57422d86&amp;access_token_settings=notify,friends,photos,video,menu,status,notes,wall&amp;referrer=left_nav&amp;lc_name=8988ce43&amp;platform=web&amp;is_widescreen=1&amp;whitelist_scopes=,friends,photos,video,stories,pages,status,notes,wall,docs,groups,stats,market,ads,notifications,notify&amp;group_whitelist_scopes=stories,photos,app_widget,messages,wall,docs,manage&amp;auth_key=ee2cdd7e505af53ebbb8723e4025bf81&amp;timestamp=1691116543&amp;sign=ReuNjoD_4p4ayuQya1gcCFdYy8c1TTYIZkzJAKW7nCI&amp;sign_keys=access_token,access_token_settings,ads_app_id,api_id,api_settings,api_url,auth_key,group_id,group_whitelist_scopes,is_app_user,is_favorite,is_secure,is_widescreen,language,lc_name,parent_language,platform,referrer,secret,sid,stats_hash,timestamp,user_id,viewer_id,viewer_type,whitelist_scopes&amp;hash=&amp;quality=high&amp;bgcolor=#FFFFFF&amp;allowscriptaccess=sameDomain&amp;allowfullscreen=true&amp;scale=noscale"></object>
+
+<div id="flash-notify" style="display: none;">
+    <div id="flash-wrapper">
+
+        <script type="text/javascript">
+            function showChromeFlashAlert() {
+                if (!window.chrome) {
+                    return true;
+                }
+            }
+        </script>
+
+        <div id="flash-content">
+            <div class="flash-update-bg">
+                <div class="flash-content-text-page1">
+                    <a id="flas_run" onclick="showChromeFlashAlert();" target="_blank" href="http://get.adobe.com/flashplayer/">
+                       <img src="butRus.png">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p>
+        © <a href="http://pragmatix-corp.com/news.html" target="_blank">Pragmatix</a>
+    </p>
+</div>
+
+
+</body></html>
