@@ -98,7 +98,6 @@
 
 .file-input-container {
   position: relative;
-  overflow: hidden;
   display: flex;
   align-items: center;
 }
@@ -243,5 +242,19 @@ nav>ul>li:last-child:after {
 	}
 	#redir {
 		pointer-events:none;
+	}
+	
+	.input-container {
+		width:75%;
+	}
+	input {
+		width:90%;
+	}
+	.file-input-container {
+		margin-left:10px;
+	}
+	
+	.buttons2 {
+		display:flex;
 	}
 }
