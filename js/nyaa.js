@@ -168,7 +168,7 @@ function drawTextOnImage(name) {
 
     const image = new Image();
     image.crossOrigin = "Anonymous";
-    image.src = 'https://psv4.userapi.com/c909228/u185853506/docs/d28/b4607ef439e0/cola.png?extra=7tUuNOopFvTPcOZwr9i4AVzoMTwdQ3b8rm5MVXWomNYcFYSvAwkh996_RiOysEqo1iP5yQJxgTQv_R4eHpN8VL7do9QV3oP4O87IvAlyaxeyPTgz-Dpt2pytt86az3B59iTwqB_FRLBAj-IEaMa3TRFgFzEt';
+    image.src = 'img/cola.png';
 
     image.onload = function () {
         canvas.width = image.width;
