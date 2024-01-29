@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nyaabox · Redirect</title>
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="css/redir.css">
+    <script src="js/redir.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Nyaabox · Redirect</h1>
+        <form id="authForm">
+            <label for="authKey">Paste your auth-key here:</label>
+            <input type="text" id="authKey" placeholder="Auth-key..." required>
+
+            <label for="platform">Choose a platform:</label>
+            <select id="platform" required>
+                <option value="vk">VK.COM</option>
+            </select>
+
+            <button type="button" onclick="play()" style="display: none;">Play</button>
+        </form>
+    </div>
+
+    <audio id="backgroundMusic" loop>
+        <source src="hop02.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+    </audio>
+	<script>
+    // Проверка типа устройства при загрузке страницы
+    window.onload = function() {
+        var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        var isMacintosh = navigator.userAgent.includes("Macintosh");
+
+        // Если тип устройства - мобильное устройство или Macintosh, перенаправление на другую страницу
+        if (isMobile || isMacintosh) {
+            window.location.href = 'mobile_error.html';
+        }
+    };
+	</script>
+    <script>
+        document.body.addEventListener('click', function () {
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            backgroundMusic.play();
+
+            const playButton = document.querySelector('button');
+            playButton.style.display = 'block';
+
+            document.body.removeEventListener('click', arguments.callee);
+        });
+    </script>
+</body>
+</html>
