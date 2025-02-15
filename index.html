@@ -37,7 +37,7 @@
 							val => {
 								localStorage.setItem('access_token',val.access_token);
 								localStorage.setItem('refresh', val.refresh_token);
-								console.log(localStorage.getItem('access_token'));
+								location.reload();
 							}
 						);
 					}
