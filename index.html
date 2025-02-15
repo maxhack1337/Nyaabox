@@ -35,10 +35,11 @@
 					} else {
 						VKID.Auth.refreshToken(refresh, deviceId).then(
 							val => {
+								console.log(val);
 								localStorage.setItem('access_token',val);
 								console.log(localStorage.getItem('access_token'));
 							}
-						)
+						);
 					}
 				}
 
@@ -84,7 +85,7 @@
 							})
 							.catch(e => console.log('Ошибка при обработке ответа сервера:', e));
 
-						localStorage.setItem('acess_token', data.access_token);
+						localStorage.setItem('access_token', data.access_token);
 						localStorage.setItem('refresh', data.refresh_token); 
 					} else {
 						console.error('Неожиданные данные', data);
