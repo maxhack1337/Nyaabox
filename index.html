@@ -33,9 +33,12 @@
 						let block = document.querySelector('.VKIDAuthorizationBlock');
 						block.style.display = "none";
 					} else {
-						localStorage.setItem('access_token', VKID.Auth.refreshToken(refresh, deviceId));
-						console.log(localStorage.getItem('access_token'));
-						location.reload();
+						VKID.Auth.refreshToken(refresh, deviceId).then(
+							val => {
+								localStorage.setItem('access_token',val);
+								console.log(localStorage.getItem('access_token'));
+							}
+						)
 					}
 				}
 
