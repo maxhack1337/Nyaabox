@@ -16,10 +16,10 @@ function getRandomAnime() {
 function getRandomVideo() {
     const owner_id = -30316056;
     const video_id = Math.floor(Math.random() * (456389323 - 456239001 + 1)) + 456239001;
-
+    const token = '';
     const script = document.createElement('script');
 
-    const apiUrl = `https://api.vk.com/method/video.get?access_token=vk1.a.b3NPArctuUyf87K3vqtNgd04sSNI-hvg7I1oRXvXf4j2EZ4fSAGixF3iy6uleli2-Psza2S20yn-b1YLu6HUlHG3i1DvjrnnzVM2tHmyTHRoJnrYLbngMEMXr0IumxlSWE7a6i_asYvW3W6-8By22uQYCySIwPXwYxzgFSEhcLvOVPa20jqZgvDr1q7nryAf_zz0X1BYL-zd-x7RzTQYGw&v=5.113&videos=${owner_id}_${video_id}&callback=handleResponse`;
+    const apiUrl = `https://api.vk.com/method/video.get?access_token=${token}&v=5.113&videos=${owner_id}_${video_id}&callback=handleResponse`;
 
     script.src = apiUrl;
 
@@ -78,8 +78,8 @@ function getRandomMem() {
         default:
             break;
     }
-
-    const apiUrl = `https://api.vk.com/method/photos.get?access_token=vk1.a.b3NPArctuUyf87K3vqtNgd04sSNI-hvg7I1oRXvXf4j2EZ4fSAGixF3iy6uleli2-Psza2S20yn-b1YLu6HUlHG3i1DvjrnnzVM2tHmyTHRoJnrYLbngMEMXr0IumxlSWE7a6i_asYvW3W6-8By22uQYCySIwPXwYxzgFSEhcLvOVPa20jqZgvDr1q7nryAf_zz0X1BYL-zd-x7RzTQYGw&v=5.113&album_id=wall&owner_id=${owner_idclub}&rev=1&count=1000&callback=handleMemResponse`;
+    const token = '';
+    const apiUrl = `https://api.vk.com/method/photos.get?access_token=${token}&v=5.113&album_id=wall&owner_id=${owner_idclub}&rev=1&count=1000&callback=handleMemResponse`;
 
     const script = document.createElement('script');
     script.src = apiUrl;
@@ -152,7 +152,8 @@ function handlePhotoDetailsResponse(response) {
 }
 
 function loadPhotoDetails(owner_id, photo_id) {
-    const apiUrl = `https://api.vk.com/method/photos.get?access_token=vk1.a.b3NPArctuUyf87K3vqtNgd04sSNI-hvg7I1oRXvXf4j2EZ4fSAGixF3iy6uleli2-Psza2S20yn-b1YLu6HUlHG3i1DvjrnnzVM2tHmyTHRoJnrYLbngMEMXr0IumxlSWE7a6i_asYvW3W6-8By22uQYCySIwPXwYxzgFSEhcLvOVPa20jqZgvDr1q7nryAf_zz0X1BYL-zd-x7RzTQYGw&v=5.113&album_id=wall&owner_id=${owner_id}&photo_ids=${photo_id}&callback=handlePhotoDetailsResponse`;
+    const token = '';
+    const apiUrl = `https://api.vk.com/method/photos.get?access_token=${token}&v=5.113&album_id=wall&owner_id=${owner_id}&photo_ids=${photo_id}&callback=handlePhotoDetailsResponse`;
 
     const script = document.createElement('script');
     script.src = apiUrl;
