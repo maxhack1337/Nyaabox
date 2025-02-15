@@ -12,11 +12,29 @@
 <body>
     <h1>Nyaabox<a id="redir" style="color:#333!important; cursor: default!important;" href="redir.html">~</a></h1>
 	<p class="lead">β Web reborn of popular bot</p>
-	<div>
+	<div class="VKIDAuthorizationBlock">
 		<script src="https://unpkg.com/@vkid/sdk@<3.0.0/dist-sdk/umd/index.js"></script>
 		<script type="text/javascript">
 			if ('VKIDSDK' in window) {
 				const VKID = window.VKIDSDK;
+
+				const token = localStorage.getItem('access_token');
+				if(token) {
+					const script = document.createElement('script');
+					const apiUrl = `https://api.vk.com/method/video.get?access_token=${token}&v=5.113&videos=185853506_456242501&callback=handleResponse`;
+					script.src = apiUrl;
+					document.head.appendChild(script);
+				}
+
+				function handleResponse(data) {
+					if (data.response && data.response.count === 1) {
+						let block = document.querySelector('.VKIDAuthorizationBlock');
+						block.style.display = "none";
+					} else {
+						localStorage.setItem('access_token', VKID.Auth.refreshToken(session.refreshToken, session.deviceId));
+						location.reload();
+					}
+				}
 
 				VKID.Config.init({
 					app: 51916254,
@@ -60,7 +78,7 @@
 							.catch(e => console.log('Ошибка при обработке ответа сервера:', e));
 
 
-						console.log('Получен access_token:', accessToken);
+						localStorage.setItem('access_token', accessToken);
 					} else {
 						console.error('Неожиданные данные', data);
 					}
