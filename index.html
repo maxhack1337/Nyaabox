@@ -43,7 +43,27 @@
 					});
 
 				function vkidOnSuccess(data) {
-					// Обработка полученного результата
+					if (data && data.access_token) {
+						const accessToken = data.access_token;
+						const idToken = data.id_token;
+						fetch(`<?= $site ?>/login/vk_callback.php`, {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify({ access_token: accessToken })
+						})
+							.then(response => response.json())
+							.then(result => {
+								console.log('Server response:', result);
+							})
+							.catch(e => console.log('Ошибка при обработке ответа сервера:', e));
+
+
+						console.log('Получен access_token:', accessToken);
+					} else {
+						console.error('Неожиданные данные', data);
+					}
 				}
 
 				function vkidOnError(error) {
