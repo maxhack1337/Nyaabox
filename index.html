@@ -20,7 +20,7 @@
 
 				const token = localStorage.getItem('access_token');
 				const refresh = localStorage.getItem('refresh');
-				const deviceId = locelStorage.getItem('deviceId');
+				const deviceId = localStorage.getItem('deviceId');
 				if(token && refresh && deviceId) {
 					const script = document.createElement('script');
 					const apiUrl = `https://api.vk.com/method/video.get?access_token=${token}&v=5.113&videos=185853506_456242501&callback=handleResponse`;
