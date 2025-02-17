@@ -39,7 +39,11 @@
 								localStorage.setItem('refresh', val.refresh_token);
 								console.log(val);
 							}
-						);
+						)
+						.catch((e)=> {
+							localStorage.clear();
+							location.reload();
+						});
 					}
 				}
 
