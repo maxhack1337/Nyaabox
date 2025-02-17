@@ -17,14 +17,14 @@ function getRandomVideo() {
   const video_id = Math.floor(Math.random() * (456389323 - 456239001 + 1)) + 456239001;
   const script = document.createElement("script");
   let token = localStorage.getItem("access_token");
-  const apiUrl = `https://api.vk.com/method/video.get?access_token=${token}&v=5.113&videos=${owner_id}_${video_id}&callback=handleResponse`;
+  const apiUrl = `https://api.vk.com/method/video.get?access_token=${token}&v=5.113&videos=${owner_id}_${video_id}&callback=handleVideoResponse`;
 
   script.src = apiUrl;
 
   document.head.appendChild(script);
 }
 
-function handleResponse(data) {
+function handleVideoResponse(data) {
   if (data.response && data.response.count === 1) {
     const title = data.response.items[0].title;
     if (title && title == ".webm") {
