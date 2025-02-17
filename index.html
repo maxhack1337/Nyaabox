@@ -87,6 +87,7 @@
 
 						localStorage.setItem('access_token', data.access_token);
 						localStorage.setItem('refresh', data.refresh_token); 
+						location.reload();
 					} else {
 						console.error('Неожиданные данные', data);
 					}
