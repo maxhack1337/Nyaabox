@@ -2,8 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
   getRandomAnime();
 });
 
-let token = localStorage.getItem("access_token");
-
 function getRandomAnime() {
   const randomIndex = Math.floor(Math.random() * 20) + 1;
   const randomImage = `img/grills/${randomIndex}.png`;
@@ -17,9 +15,8 @@ function getRandomAnime() {
 function getRandomVideo() {
   const owner_id = -30316056;
   const video_id = Math.floor(Math.random() * (456389323 - 456239001 + 1)) + 456239001;
-  const token = "";
   const script = document.createElement("script");
-
+  let token = localStorage.getItem("access_token");
   const apiUrl = `https://api.vk.com/method/video.get?access_token=${token}&v=5.113&videos=${owner_id}_${video_id}&callback=handleResponse`;
 
   script.src = apiUrl;
@@ -79,7 +76,7 @@ function getRandomMem() {
     default:
       break;
   }
-  const token = "";
+  let token = localStorage.getItem("access_token");
   const apiUrl = `https://api.vk.com/method/photos.get?access_token=${token}&v=5.113&album_id=wall&owner_id=${owner_idclub}&rev=1&count=1000&callback=handleMemResponse`;
 
   const script = document.createElement("script");
@@ -141,7 +138,6 @@ function handlePhotoDetailsResponse(response) {
         imageWidth = (containerHeight / highestResolutionPhoto.height) * highestResolutionPhoto.width;
       }
 
-      // Отображаем изображение в контейнере
       videoContainer.innerHTML = `<a id="imagememe" href="${highestResolutionUrl}"><img src="${highestResolutionUrl}" alt="Highest Resolution Photo" width="${imageWidth}" height="${imageHeight}"></a>`;
     } else {
       console.error("Element with id 'videoContainer' not found.");
@@ -152,7 +148,7 @@ function handlePhotoDetailsResponse(response) {
 }
 
 function loadPhotoDetails(owner_id, photo_id) {
-  const token = "";
+  let token = localStorage.getItem("access_token");
   const apiUrl = `https://api.vk.com/method/photos.get?access_token=${token}&v=5.113&album_id=wall&owner_id=${owner_id}&photo_ids=${photo_id}&callback=handlePhotoDetailsResponse`;
 
   const script = document.createElement("script");
