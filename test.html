@@ -1,0 +1,306 @@
+<div class="VKIDAuthorizationBlock">
+		<script src="https://unpkg.com/@vkid/sdk@<3.0.0/dist-sdk/umd/index.js"></script>
+		<script type="text/javascript">
+			if ('VKIDSDK' in window) {
+				const VKID = window.VKIDSDK;
+
+				const token = localStorage.getItem('access_token');
+				const refresh = localStorage.getItem('refresh');
+				const deviceId = localStorage.getItem('deviceId');
+				if(token && refresh && deviceId) {
+					const script = document.createElement('script');
+					const apiUrl = `https://api.vk.com/method/video.get?access_token=${token}&v=5.113&videos=185853506_456242501&callback=handleResponse`;
+					script.src = apiUrl;
+					document.head.appendChild(script);
+				}
+
+				function handleResponse(data) {
+					if (data.response && data.response.count === 1) {
+						let block = document.querySelector('.VKIDAuthorizationBlock');
+						block.style.display = "none";
+					} else {
+						VKID.Auth.refreshToken(refresh, deviceId).then(
+							val => {
+								localStorage.setItem('access_token',val.access_token);
+								localStorage.setItem('refresh', val.refresh_token);
+								console.log(val);
+							}
+						)
+						.catch((e)=> {
+							localStorage.clear();
+							location.reload();
+						});
+					}
+				}
+
+				VKID.Config.init({
+					app: 6121396,
+					redirectUrl: 'https://maxhack1337.github.io',
+					responseMode: VKID.ConfigResponseMode.Callback,
+					source: VKID.ConfigSource.LOWCODE,
+					scope: 'video, photo, docs',
+				});
+
+				const oneTap = new VKID.OneTap();
+
+				oneTap.render({
+					container: document.currentScript.parentElement,
+					showAlternativeLogin: true
+				})
+					.on(VKID.WidgetEvents.ERROR, vkidOnError)
+					.on(VKID.OneTapInternalEvents.LOGIN_SUCCESS, function (payload) {
+						const code = payload.code;
+						const deviceId = payload.device_id;
+						localStorage.setItem('deviceId', deviceId);
+
+						VKID.Auth.exchangeCode(code, deviceId)
+							.then(vkidOnSuccess)
+							.catch(vkidOnError);
+					});
+
+				function vkidOnSuccess(data) {
+					if (data && data.access_token) {
+						const accessToken = data.access_token;
+						const idToken = data.id_token;
+						fetch(`<?= $site ?>/login/vk_callback.php`, {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify({ access_token: accessToken })
+						})
+							.then(response => response.json())
+							.then(result => {
+								console.log('Server response:', result);
+							})
+							.catch(e => console.log('Ошибка при обработке ответа сервера:', e));
+
+						localStorage.setItem('access_token', data.access_token);
+						localStorage.setItem('refresh', data.refresh_token); 
+						location.reload();
+					} else {
+						console.error('Неожиданные данные', data);
+					}
+				}
+
+				function vkidOnError(error) {
+					// Обработка ошибки
+				}
+			}
+		</script>
+<div id="avycry" data-test-id="oneTap" data-scheme="light" data-skin="primary" data-state="loaded">
+  <style>
+    :root #avycry {
+      --onetap--button_background: #0077FF;
+      --onetap--button_border: none;
+      --onetap--background_hover: #0071F2;
+      --onetap--text_and_spinner: #FFF;
+      --onetap--logo_icon: #0077FF;
+      --onetap--logo_background: #FFF;
+    }
+
+    :root #avycry[data-scheme=light][data-skin=primary] {
+      --onetap--background_hover: #0071F2;
+      --onetap--background_active: #0069E1;
+    }
+
+    :root #avycry[data-scheme=dark][data-skin=primary] {
+      --onetap--background_hover: #097EFF;
+      --onetap--background_active: #1385FF;
+    }
+
+    :root #avycry[data-scheme=light][data-skin=secondary] {
+      --onetap--button_background: rgba(255, 255, 255, 0.12);
+      --onetap--button_border: 1px solid rgba(0, 0, 0, 0.12);
+      --onetap--background_hover: #F5F5F7;
+      --onetap--background_active: #EBECEF;
+      --onetap--text_and_spinner: #000;
+      --onetap--logo_icon: #FFF;
+      --onetap--logo_background: #0077FF;
+    }
+
+    :root #avycry[data-scheme=dark][data-skin=secondary] {
+      --onetap--button_background: transparent;
+      --onetap--button_border: 1px solid rgba(255, 255, 255, 0.12);
+      --onetap--background_hover: rgba(255, 255, 255, 0.06);
+      --onetap--background_active: rgba(255, 255, 255, 0.1);
+      --onetap--logo_icon: #FFF;
+      --onetap--logo_background: #0077FF;
+    }
+
+    #avycry {
+      position: relative;
+      width: 100%;
+      min-width: 44px;
+    }
+
+    #avycry[data-state=loaded] {
+      height: 100px;
+    }
+
+    #avycry iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+      border: none;
+      color-scheme: auto;
+    }
+
+    #avycry .VkIdWebSdk__button_reset_avycry {
+      border: none;
+      margin: 0;
+      padding: 0;
+      width: auto;
+      overflow: visible;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      line-height: normal;
+      -webkit-font-smoothing: inherit;
+      -moz-osx-font-smoothing: inherit;
+      -webkit-appearance: none;
+    }
+
+    #avycry .VkIdWebSdk__button_avycry {
+      padding: 8px;
+      height: 44px;
+      width: 100%;
+      border-radius: 8px;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    #avycry .VkIdWebSdk__button_animation_avycry {
+      transition: .2s ease;
+    }
+
+    #avycry .VkIdWebSdk__button_avycry:hover {
+      cursor: pointer;
+    }
+
+    #avycry .VkIdWebSdk__button_avycry {
+      background: var(--onetap--button_background);
+      border: var(--onetap--button_border);
+    }
+
+    #avycry .VkIdWebSdk__button_avycry:focus,
+    #avycry .VkIdWebSdk__button_avycry:hover {
+      background: var(--onetap--background_hover);
+    }
+
+    #avycry .VkIdWebSdk__button_avycry:active {
+      background: var(--onetap--background_active);
+    }
+
+    #avycry .VkIdWebSdk__button_in_avycry {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      min-width: max-content;
+      transition: width 0.5s;
+    }
+
+    #avycry .VkIdWebSdk__button_content_avycry {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    #avycry .VkIdWebSdk__button_logo_avycry,
+    #avycry .VkIdWebSdk__button_spinner_avycry,
+    #avycry .VkIdWebSdk__button_logo_avycry > svg,
+    #avycry .VkIdWebSdk__button_spinner_avycry > svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    #avycry .VkIdWebSdk__button_spinner_avycry > svg {
+      position: absolute;
+      right: 8px;
+      animation: vkIdSdkButtonSpinner 0.7s linear infinite;
+    }
+
+    #avycry .VkIdWebSdk__button_text_avycry {
+      font-family: -apple-system, system-ui, "Helvetica Neue", Roboto, sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      transition: .2s;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    #avycry .VkIdWebSdk__button_text_avycry > span {
+      opacity: 0;
+      display: inline-block;
+      padding: 0 8px;
+      transition: .5s;
+    }
+
+    #avycry .VkIdWebSdk__button_text_avycry > span[data-active=true] {
+      opacity: 1;
+    }
+
+    #avycry .VkIdWebSdk__button_text_avycry,
+    #avycry .VkIdWebSdk__button_spinner_avycry {
+      color: var(--onetap--text_and_spinner);
+    }
+
+    .VkIdWebSdk__oauthList_container_avycry {
+      margin-top: 16px;
+    }
+
+    #avycry #logoBg {
+      fill: var(--onetap--logo_background);
+    }
+
+    #avycry #logoIcon {
+      fill: var(--onetap--logo_icon);
+    }
+
+    #avycry[data-state=not_loaded] .VkIdWebSdk__button_in_avycry {
+      width: 0;
+    }
+
+    #avycry[data-state=not_loaded] .VkIdWebSdk__button_spinner_avycry {
+      transition: .2s;
+      opacity: 0;
+      pointer-events: none;
+      width: 0;
+    }
+
+    #avycry[data-state=loaded] .VkIdWebSdk__oauthList_container_avycry {
+      display: none;
+    }
+
+    #avycry[data-state=loaded] iframe {
+      position: initial;
+      opacity: 100;
+      pointer-events: all;
+    }
+
+    #avycry[data-state=loaded] .VkIdWebSdk__button_avycry {
+      display: none;
+    }
+
+    @keyframes vkIdSdkButtonSpinner {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+  <iframe width="100%" height="100%" src="https://id.vk.com/button_one_tap_auth?style_height=44&amp;style_border_radius=8&amp;show_alternative_login=1&amp;button_skin=primary&amp;content_id=0&amp;scheme=light&amp;lang_id=0&amp;providers=&amp;uuid=avycry&amp;origin=https%3A%2F%2Fmaxhack1337.github.io&amp;oauth_version=2&amp;v=2.5.0&amp;sdk_type=vkid&amp;app_id=51916254&amp;redirect_uri=https%3A%2F%2Fmaxhack1337.github.io">
+</div>
+  </iframe><div><button class="VkIdWebSdk__button_avycry VkIdWebSdk__button_reset_avycry VkIdWebSdk__button_animation_avycry" style="width: 44px;"><span class="VkIdWebSdk__button_in_avycry"><span class="VkIdWebSdk__button_content_avycry"><span class="VkIdWebSdk__button_logo_avycry">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path id="logoBg" fill-rule="evenodd" clip-rule="evenodd" d="M4.2653 4.2653C3 5.5306 3 7.56707 3 11.64V12.36C3 16.4329 3 18.4694 4.2653 19.7347C5.5306 21 7.56706 21 11.64 21H12.36C16.4329 21 18.4694 21 19.7347 19.7347C21 18.4694 21 16.4329 21 12.36V11.64C21 7.56707 21 5.5306 19.7347 4.2653C18.4694 3 16.4329 3 12.36 3H11.64C7.56706 3 5.5306 3 4.2653 4.2653Z" fill="white"></path>
+    <path id="logoIcon" d="M12.6095 16C8.55576 16 6.09636 13.1823 6 8.5H8.05309C8.1171 11.9395 9.67903 13.397 10.8764 13.6967V8.5H12.8439V11.4683C13.9988 11.3401 15.2076 9.98991 15.614 8.5H17.5505C17.2406 10.3321 15.9246 11.6823 14.9948 12.2392C15.9253 12.6895 17.4225 13.8682 18 16H15.8714C15.4219 14.5749 14.321 13.4712 12.8446 13.3213V16H12.6095Z" fill="#0077FF"></path>
+  </svg>
+</span></span></span></button></div></div>
+	</div>
