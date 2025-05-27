@@ -256,7 +256,7 @@ function generateDem() {
   const subtitleText = document.getElementById("textInput2").value;
 
   if (!currentImage) {
-    const defaultImageUrl = "img/public.avif";
+    const defaultImageUrl = "https://maxhack1337.github.io/Nyaabox/img/public.avif";
     currentImage = new Image();
     currentImage.src = defaultImageUrl;
   }
